@@ -1,8 +1,12 @@
 import requests
+import logging
 
 from flask import Flask
 from flask import jsonify
 from flask_cors import CORS
+
+
+logging.basicConfig(level=logging.INFO)
 
 
 app = Flask(__name__)
@@ -21,4 +25,5 @@ def get_app_version():
 @app.route("/proxy/vehicles")
 def proxy_vehicles():
     resp = requests.get('https://www.plymouthbus.co.uk/_ajax/vehicles')
+    logging.info("Proxy result: %s - %s" % (resp.status_code, resp.text))
     return resp.json()
