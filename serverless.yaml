@@ -22,12 +22,6 @@ functions:
       origin: '*'
       headers:
         - Content-Type
-  cron-collector:
-    handler: data_collector.main
-    memorySize: 128
-    timeout: 120
-    events:
-      - schedule: rate(10 minutes)
 
 plugins:
   - serverless-wsgi
