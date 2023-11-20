@@ -1,3 +1,5 @@
+import requests
+
 from flask import Flask
 from flask import jsonify
 from flask_cors import CORS
@@ -18,4 +20,5 @@ def get_app_version():
 
 @app.route("/proxy/vehicles")
 def proxy_vehicles():
-    return None
+    resp = requests.get('https://www.plymouthbus.co.uk/_ajax/vehicles')
+    return resp.json()
