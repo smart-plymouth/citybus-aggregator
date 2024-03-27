@@ -13,7 +13,7 @@ CORS(app)
 @app.route("/")
 def get_app_version():
     app_data = {
-        "service": "CityBus Aggregator API",
+        "service": "Bus Aggregator API",
         "version": 1.0
     }
     return jsonify(app_data)
