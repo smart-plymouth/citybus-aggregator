@@ -1,4 +1,5 @@
 import requests
+import json
 
 from flask import Flask
 from flask import jsonify
@@ -20,6 +21,26 @@ def get_app_version():
 
 @app.route("/proxy/vehicles")
 def proxy_vehicles():
-    resp = requests.get('https://www.plymouthbus.co.uk/_ajax/vehicles')
+    url = "http://flaresolverr:8191/v1"
+
+    payload = json.dumps({
+        "cmd": "request.get",
+        "url": "https://www.plymouthbus.co.uk/_ajax/vehicles",
+        "maxTimeout": 60000
+    })
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    resp = requests.request("POST", url, headers=headers, data=payload)
+
     print("Proxy result: %s - %s" % (resp.status_code, resp.text))
-    return resp.json()
+    data = json.loads(resp.text)
+    response = data.get('solution').get('response').replace('<html><head><meta name="color-scheme" content="light dark"></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">', '')
+    response = response.replace('</pre></body></html>', '')
+    return jsonify(json.loads(response))
+
+
+if __name__ == '__main__':
+    app.run(threaded=True)
+
